@@ -196,8 +196,8 @@ Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
 Most of the code is based on Joe Hewitt's getElementsBySelector.js on
 L<http://www.joehewitt.com/blog/2006-03-20.php> and Andrew Dupont's
 patch to Prototype.js on L<http://dev.rubyonrails.org/ticket/5171>,
-but slightly modified using CSS to XPath translation table per
-L<http://plasmasturm.org/log/444/>
+but slightly modified using Aristotle Pegaltzis' CSS to XPath
+translation table per L<http://plasmasturm.org/log/444/>
 
 =head1 LICENSE
 
