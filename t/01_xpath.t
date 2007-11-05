@@ -32,6 +32,12 @@ E F
 
 ===
 --- selector
+E > F
+--- xpath
+//E/F
+
+===
+--- selector
 E:first-child
 --- xpath
 //*[1]/self::E
