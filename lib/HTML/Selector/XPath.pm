@@ -168,13 +168,26 @@ to the equivalent XPath expression.
 
 =head1 CAVEATS
 
+=head2 NOT PSEUDO CLASS
+
 This module supports I<:first-child> and I<:lang> pseudo class, and a
 partial support for I<:not> CSS 3 pseudo class as well. When you use
-I<:not>, this module will produce I<:not()> euiqvalent XPath
-expression, which is only available in XPath 2.0 implementation.
+I<:not>, this module will produce the equivalent XPath expression
+I<:not()>, which is only available in XPath 2.0 implementation.
 
 So far as I have tested, I<:not()> is not available in Perl XPath
 modules like L<XML::LibXML> and L<HTML::Builder::XPath>.
+
+=head2 CSS SELECTOR VALIDATION
+
+This module doesn't validate if the original CSS Selector expression
+is valid. For example,
+
+  div.123foo
+
+is an invalid CSS selector (class names should not begin with
+numbers), but this module ignores that and tries to generate
+an equivalent XPath expression anyway.
 
 =head1 AUTHOR
 
