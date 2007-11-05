@@ -5,7 +5,7 @@ use HTML::Selector::XPath;
 eval { require HTML::TreeBuilder::XPath };
 plan skip_all => "HTML::TreeBuilder::XPath is not installed." if $@;
 
-filters { selector => 'chomp', expected => 'lines' };
+filters { selector => 'chomp', expected => [ 'lines', 'array' ] };
 plan tests => 1 * blocks;
 
 run {
@@ -15,7 +15,7 @@ run {
     $tree->eof;
 
     my @nodes = $tree->findnodes( HTML::Selector::XPath->new($block->selector)->to_xpath );
-    is_deeply [ map $_->as_XML, @nodes ], [ $block->expected ];
+    is_deeply [ map $_->as_XML, @nodes ], $block->expected;
 }
 
 __END__
