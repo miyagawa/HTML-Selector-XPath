@@ -180,8 +180,8 @@ modules like L<XML::LibXML> and L<HTML::Builder::XPath>.
 
 =head2 CSS SELECTOR VALIDATION
 
-This module doesn't validate if the original CSS Selector expression
-is valid. For example,
+This module doesn't validate whether the original CSS Selector
+expression is valid. For example,
 
   div.123foo
 
