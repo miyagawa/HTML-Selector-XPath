@@ -87,5 +87,34 @@ div#bar, div.baz
 <div id="bar">baz</div>
 <div class="baz">baz</div>
 
+===
+--- input
+<div>foo</div>
+<div lang="en">baz</div>
+<div lang="en-us">baz</div>
+--- selector
+div:not([lang|="en"])
+--- expected
+<div>foo</div>
 
+===
+--- input
+<div>foo</div>
+<div class="foo">baz</div>
+<div class="foob">baz</div>
+--- selector
+div:not([class~="foo"])
+--- expected
+<div>foo</div>
+<div class="foob">baz</div>
+
+===
+--- input
+<div>foo</div>
+<div class="foo">baz</div>
+<div class="foob">baz</div>
+--- selector
+div:not([class])
+--- expected
+<div>foo</div>
 

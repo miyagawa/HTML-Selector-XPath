@@ -1,7 +1,7 @@
 package HTML::Selector::XPath;
 
 use strict;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 require Exporter;
 our @EXPORT_OK = qw(selector_to_xpath);
@@ -98,12 +98,12 @@ sub to_xpath {
                 if ($2 eq '=') {
                     push @parts, "[\@$1!='$3']";
                 } elsif ($2 eq '~=') {
-                    push @parts, ":not([contains(concat(' ', \@$1, ' '), ' $3 ')])";
+                    push @parts, "[not(contains(concat(' ', \@$1, ' '), ' $3 '))]";
                 } elsif ($2 eq '|=') {
-                    push @parts, ":not([\@$1='$3' or starts-with(\@$1, '$3-')])";
+                    push @parts, "[not(\@$1='$3' or starts-with(\@$1, '$3-'))]";
                 }
             } elsif ($sub_rule =~ s/$reg->{attr1}//) {
-                push @parts, ":not([\@$1])";
+                push @parts, "[not(\@$1)]";
             }
         }
 
@@ -167,16 +167,6 @@ HTML::Selector::XPath is a utility function to compile CSS2 selector
 to the equivalent XPath expression.
 
 =head1 CAVEATS
-
-=head2 NOT PSEUDO CLASS
-
-This module supports I<:first-child> and I<:lang> pseudo class, and a
-partial support for I<:not> CSS 3 pseudo class as well. When you use
-I<:not>, this module will produce the equivalent XPath expression
-I<:not()>, which is only available in XPath 2.0 implementation.
-
-So far as I have tested, I<:not()> is not available in Perl XPath
-modules like L<XML::LibXML> and L<HTML::Builder::XPath>.
 
 =head2 CSS SELECTOR VALIDATION
 
