@@ -128,3 +128,11 @@ div:not([class])
 --- expected
 <div class="foo">baz</div>
 
+===
+--- input
+<p class="pastoral blue aqua marine">foo</p>
+<p class="pastoral blue">bar</p>
+--- selector
+p.pastoral.marine
+--- expected
+<p class="pastoral blue aqua marine">foo</p>
