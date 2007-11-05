@@ -168,9 +168,11 @@ modules like L<XML::LibXML> and L<HTML::Builder::XPath>.
 
 Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
 
-Code is mostly based on Joe Hewitt's getElementsBySelector.js on
-L<http://www.joehewitt.com/blog/2006-03-20.php> but slightly modified using
-CSS to XPath translation table per L<http://plasmasturm.org/log/444/>
+Most of the code is based on Joe Hewitt's getElementsBySelector.js on
+L<http://www.joehewitt.com/blog/2006-03-20.php> and Andrew Dupont's
+patch to Prototype.js on L<http://dev.rubyonrails.org/ticket/5171>,
+but slightly modified using CSS to XPath translation table per
+L<http://plasmasturm.org/log/444/>
 
 =head1 LICENSE
 
@@ -179,6 +181,6 @@ it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<http://dev.rubyonrails.org/ticket/5171>
+L<http://use.perl.org/~miyagawa/journal/31090>
 
 =cut
