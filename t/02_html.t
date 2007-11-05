@@ -118,3 +118,13 @@ div:not([class])
 --- expected
 <div>foo</div>
 
+===
+--- SKIP
+--- input
+<p>foo</p>
+<div class="foo">baz</div>
+--- selector
+*:not(p)
+--- expected
+<div class="foo">baz</div>
+
