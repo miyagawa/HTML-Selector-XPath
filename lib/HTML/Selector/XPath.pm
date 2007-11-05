@@ -3,6 +3,14 @@ package HTML::Selector::XPath;
 use strict;
 our $VERSION = '0.01';
 
+require Exporter;
+our @EXPORT_OK = qw(selector_to_xpath);
+*import = \&Exporter::import;
+
+sub selector_to_xpath {
+    __PACKAGE__->new(shift)->to_xpath;
+}
+
 my $reg = {
     # tag name/id/class
     element => qr/^([#.]?)([a-z0-9\\*_-]*)((\|)([a-z0-9\\*_-]*))?/i,
@@ -146,8 +154,12 @@ HTML::Selector::XPath - CSS Selector to XPath compiler
 
   use HTML::Selector::XPath;
 
-  my $selector = HTML::Selector::XPath->new("li.main");
+  my $selector = HTML::Selector::XPath->new("li#main");
   $selector->to_xpath; # //li[@id='main']
+
+  # functional interface
+  use HTML::Selector::Xpath 'selector_to_xpath';
+  my $xpath = selector_to_xpath('div.foo');
 
 =head1 DESCRIPTION
 
@@ -181,6 +193,7 @@ it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
+L<http://www.w3.org/TR/REC-CSS2/selector.html>
 L<http://use.perl.org/~miyagawa/journal/31090>
 
 =cut
