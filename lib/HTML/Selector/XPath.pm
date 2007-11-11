@@ -1,7 +1,7 @@
 package HTML::Selector::XPath;
 
 use strict;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 require Exporter;
 our @EXPORT_OK = qw(selector_to_xpath);

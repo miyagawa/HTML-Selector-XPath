@@ -1,8 +1,11 @@
 Revision history for Perl extension HTML::Selector::XPath
 
-  0.02  Tue Oct  3 22:43:39 JST 2006
-        * Added support for :not() without XPath 2.0
+0.03  Sat Nov 10 20:26:47 PST 2007
+      * Added nth-child() support (Thanks to Tokuhiro Matsuno)
+
+0.02  Tue Oct  3 22:43:39 JST 2006
+      * Added support for :not() without XPath 2.0
           (Thanks to Aristotle Pegaltzis)
 
-  0.01  Sun Sep 24 20:10:35 2006
-        - original version
+0.01  Sun Sep 24 20:10:35 2006
+      - original version
