@@ -119,3 +119,9 @@ E#myid
 foo.bar, bar
 --- xpath
 //foo[contains(concat(' ', @class, ' '), ' bar ')] | //bar
+
+===
+--- selector
+E:nth-child(1)
+--- xpath
+//E[count(preceding-sibling::*) = 0]

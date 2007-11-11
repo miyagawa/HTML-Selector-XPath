@@ -21,7 +21,7 @@ my $reg = {
     # attribute value match
     attr2   => qr/^\[\s*([^~\|=\s]+)\s*([~\|]?=)\s*"([^"]+)"\s*\]/i,
     attrN   => qr/^:not\((.*?)\)/i,
-    pseudo  => qr/^:([()a-z_-]+)/i,
+    pseudo  => qr/^:([()a-z0-9_-]+)/i,
     # adjacency/direct descendance
     combinator => qr/^(\s*[>+\s])/i,
     # rule separator
@@ -115,6 +115,8 @@ sub to_xpath {
                 $parts[$#parts] = '*[1]/self::' . $parts[$#parts];
             } elsif ($1 =~ /^lang\(([\w\-]+)\)$/) {
                 push @parts, "[\@xml:lang='$1' or starts-with(\@xml:lang, '$1-')]";
+            } elsif ($1 =~ /^nth-child\((\d+)\)$/) {
+                push @parts, "[count(preceding-sibling::*) = @{[ $1 - 1 ]}]";
             } else {
                 Carp::croak "Can't translate '$1' pseudo-class";
             }

@@ -136,3 +136,22 @@ div:not([class])
 p.pastoral.marine
 --- expected
 <p class="pastoral blue aqua marine">foo</p>
+
+===
+--- input
+<p>foo</p>
+<p>bar</p>
+--- selector
+p:nth-child(1)
+--- expected
+<p>foo</p>
+
+===
+--- input
+<p>foo</p>
+<p>bar</p>
+--- selector
+p:nth-child(2)
+--- expected
+<p>bar</p>
+
