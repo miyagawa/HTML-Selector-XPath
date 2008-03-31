@@ -125,3 +125,23 @@ foo.bar, bar
 E:nth-child(1)
 --- xpath
 //E[count(preceding-sibling::*) = 0]
+
+===
+--- selector
+E:last-child
+--- xpath
+//E[not(following-sibling::*)]
+
+
+===
+--- selector
+F E:last-child
+--- xpath
+//F//E[not(following-sibling::*)]
+
+===
+--- selector
+F > E:last-child
+--- xpath
+//F/E[not(following-sibling::*)]
+

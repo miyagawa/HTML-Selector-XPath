@@ -113,6 +113,8 @@ sub to_xpath {
         while ($rule =~ s/$reg->{pseudo}//) {
             if ( $1 eq 'first-child') {
                 $parts[$#parts] = '*[1]/self::' . $parts[$#parts];
+            } elsif ( $1 eq 'last-child') {
+                push @parts, '[not(following-sibling::*)]';
             } elsif ($1 =~ /^lang\(([\w\-]+)\)$/) {
                 push @parts, "[\@xml:lang='$1' or starts-with(\@xml:lang, '$1-')]";
             } elsif ($1 =~ /^nth-child\((\d+)\)$/) {
