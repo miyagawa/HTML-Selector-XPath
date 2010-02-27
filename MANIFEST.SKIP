@@ -9,3 +9,6 @@
 ^MakeMaker-\d
 \.gz$
 \.cvsignore
+\.git
+\.shipit
+
