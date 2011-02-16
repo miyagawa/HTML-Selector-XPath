@@ -145,3 +145,15 @@ F > E:last-child
 --- xpath
 //F/E[not(following-sibling::*)]
 
+===
+--- selector
+E[@href*="bar"]
+--- xpath
+//E[contains(@href, 'bar')]
+
+===
+--- selector
+E:not([@href*="bar"])
+--- xpath
+//E[not(contains(@href, 'bar'))]
+

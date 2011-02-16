@@ -1,5 +1,8 @@
 Revision history for Perl extension HTML::Selector::XPath
 
+0.05 to be released
+      - Add CCS3 "=*" operator for real substring matching
+
 0.04  Sat Feb 27 01:43:00 PST 2010
       - No code change. Fix the packaging issue and typo in the doc
 

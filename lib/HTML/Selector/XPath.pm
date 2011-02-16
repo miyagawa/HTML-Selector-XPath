@@ -20,7 +20,7 @@ my $reg = {
     # attribute presence
     attr1   => qr/^\[([^\]]*)\]/,
     # attribute value match
-    attr2   => qr/^\[\s*([^~\|=\s]+)\s*([~\|]?=)\s*"([^"]+)"\s*\]/i,
+    attr2   => qr/^\[\s*([^*~\|=\s:]+)\s*([~\|*]?=)\s*"([^"]+)"\s*\]/i,
     attrN   => qr/^:not\((.*?)\)/i,
     pseudo  => qr/^:([()a-z0-9_-]+)/i,
     # adjacency/direct descendance
@@ -83,6 +83,8 @@ sub to_xpath {
                 push @parts, "[\@$1!='$3]";
             } elsif ($2 eq '~=') { # substring attribute match
                 push @parts, "[contains(concat(' ', \@$1, ' '), ' $3 ')]";
+            } elsif ($2 eq '*=') { # real substring attribute match
+                push @parts, "[contains($1, '$3')]";
             } elsif ($2 eq '|=') {
                 push @parts, "[\@$1='$3' or starts-with(\@$1, '$3-')]";
             } else { # exact match
@@ -100,6 +102,8 @@ sub to_xpath {
                     push @parts, "[\@$1!='$3']";
                 } elsif ($2 eq '~=') {
                     push @parts, "[not(contains(concat(' ', \@$1, ' '), ' $3 '))]";
+                } elsif ($2 eq '*=') {
+                    push @parts, "[not(contains($1, '$3'))]";
                 } elsif ($2 eq '|=') {
                     push @parts, "[not(\@$1='$3' or starts-with(\@$1, '$3-'))]";
                 }
