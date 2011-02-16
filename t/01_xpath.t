@@ -157,3 +157,8 @@ E:not([@href*="bar"])
 --- xpath
 //E[not(contains(@href, 'bar'))]
 
+===
+--- selector
+F > E:nth-of-type(3)
+--- xpath
+//F/E[3]
