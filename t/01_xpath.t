@@ -186,3 +186,44 @@ E:contains("Hello")
 E:contains( "Hello" )
 --- xpath
 //E[text()[contains(string(.),"Hello")]]
+===
+--- selector
+E ~ F
+--- xpath
+//E/following-sibling::F
+
+===
+--- selector
+E ~ #bar
+--- xpath
+//E/following-sibling::*[@id='bar']
+
+===
+--- selector
+E ~ .bar
+--- xpath
+//E/following-sibling::*[contains(concat(' ', @class, ' '), ' bar ')]
+
+===
+--- selector
+E ~ *
+--- xpath
+//E/following-sibling::*
+
+===
+--- selector
+.foo ~ E
+--- xpath
+//*[contains(concat(' ', @class, ' '), ' foo ')]/following-sibling::E
+
+===
+--- selector
+.foo ~ *
+--- xpath
+//*[contains(concat(' ', @class, ' '), ' foo ')]/following-sibling::*
+
+===
+--- selector
+.foo ~ .bar
+--- xpath
+//*[contains(concat(' ', @class, ' '), ' foo ')]/following-sibling::*[contains(concat(' ', @class, ' '), ' bar ')]
