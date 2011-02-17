@@ -157,6 +157,9 @@ sub to_xpath {
                 $rule =~ s/^\s*"([^"]*)"\s*\)\s*$//
                     or die "Malformed string in :contains(): '$rule'";
                 push @parts, qq{[text()[contains(string(.),"$1")]]};
+            } elsif ( $1 eq 'root') {
+                # This will give surprising results if you do E > F:root
+                $parts[0] = "/";
             } else {
                 Carp::croak "Can't translate '$1' pseudo-class";
             }

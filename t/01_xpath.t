@@ -391,3 +391,16 @@ E:nth-child(1)
 E:nth-child(2)
 --- xpath
 //E[count(preceding-sibling::*) = 1]
+
+===
+--- selector
+:root
+--- xpath
+/*
+
+===
+--- selector
+E:root
+--- xpath
+/E
+===
