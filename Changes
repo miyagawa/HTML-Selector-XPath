@@ -1,10 +1,11 @@
 Revision history for Perl extension HTML::Selector::XPath
 
-0.06 to be released
-      - Add CSS3 "=$" operator
-      - Add CSS3 "=^" operator
-      - Add complex subexpressions for :not()
-      - Add :empty selector
+0.06 Thu Feb 17 13:54:45 PST 2011
+      - Add CSS3 "=$" operator (Corion)
+      - Add CSS3 "=^" operator (Corion)
+      - Add complex subexpressions for :not() (Corion)
+      - Add :empty selector (Corion)
+      - Support 'root' parameters to to_xpath (JZOBEL, David Wheeler, Corion)
 
 0.05 Thu Feb 17 09:08:06 PST 2011
       - Add CSS3 "=*" operator for real substring matching (Corion)
