@@ -7,7 +7,7 @@ filters { selector => 'chomp', xpath => 'chomp' };
 
 run {
     my $block = shift;
-    is selector_to_xpath($block->selector, root=> '/R/'), $block->xpath, $block->selector;
+    is selector_to_xpath($block->selector, root=> '/R'), $block->xpath, $block->selector;
 }
 
 __END__
@@ -15,54 +15,54 @@ __END__
 --- selector
 *
 --- xpath
-/R//*
+/R/*
 
 ===
 --- selector
 E
 --- xpath
-/R//E
+/R/E
 
 ===
 --- selector
 E F
 --- xpath
-/R//E//F
+/R/E//F
 
 ===
 --- selector
 E > F
 --- xpath
-/R//E/F
+/R/E/F
 
 ===
 --- selector
 E + F
 --- xpath
-/R//E/following-sibling::*[1]/self::F
+/R/E/following-sibling::*[1]/self::F
 
 ===
 --- selector
 E[foo]
 --- xpath
-/R//E[@foo]
+/R/E[@foo]
 
 ===
 --- selector
 E[foo="warning"]
 --- xpath
-/R//E[@foo='warning']
+/R/E[@foo='warning']
 
 ===
 --- selector
 E#myid
 --- xpath
-/R//E[@id='myid']
+/R/E[@id='myid']
 
 ===
 --- selector
 foo.bar, bar
 --- xpath
-/R//foo[contains(concat(' ', @class, ' '), ' bar ')] | /R//bar
+/R/foo[contains(concat(' ', @class, ' '), ' bar ')] | /R/bar
 
 
