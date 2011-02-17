@@ -15,7 +15,7 @@ run {
     $tree->eof;
 
     my @nodes = $tree->findnodes( HTML::Selector::XPath->new($block->selector)->to_xpath );
-    is_deeply [ map $_->as_XML, @nodes ], $block->expected;
+    is_deeply [ map $_->as_XML, @nodes ], $block->expected, $block->selector;
 }
 
 __END__
