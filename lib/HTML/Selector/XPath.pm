@@ -20,7 +20,7 @@ my $reg = {
     # attribute presence
     attr1   => qr/^\[([^\]]*)\]/,
     # attribute value match
-    attr2   => qr/^\[\s*([^*~\|=\s:]+)\s*([~\|*]?=)\s*"([^"]+)"\s*\]/i,
+    attr2   => qr/^\[\s*([^*~\|=\s:^\$]+)\s*([~\|*^\$]?=)\s*"([^"]+)"\s*\]/i,
     attrN   => qr/^:not\((.*?)\)/i,
     pseudo  => qr/^:([()a-z0-9_-]+)/i,
     # adjacency/direct descendance
@@ -40,6 +40,26 @@ sub selector {
     $self->{expression} = shift if @_;
     $self->{expression};
 }
+
+sub convert_attribute_match {
+    my ($left,$op,$right) = @_;
+    # negation (e.g. [input!="text"]) isn't implemented in CSS, but include it anyway:
+    if ($op eq '!=') {
+        "\@$left!='$right";
+    } elsif ($op eq '~=') { # substring attribute match
+        "contains(concat(' ', \@$left, ' '), ' $right ')";
+    } elsif ($op eq '*=') { # real substring attribute match
+        "contains($left, '$right')";
+    } elsif ($op eq '|=') {
+        "\@$left='$right' or starts-with(\@$left, '$right-')";
+    } elsif ($op eq '^=') {
+        "starts-with(\@$left,'$3')";
+    } elsif ($op eq '$=') {
+        "ends-with(\@$left,'$3')";
+    } else { # exact match
+        "\@$left='$3'";
+    }
+};
 
 sub to_xpath {
     my $self = shift;
@@ -95,18 +115,8 @@ sub to_xpath {
 
         # Match attribute selectors
         if ($rule =~ s/$reg->{attr2}//) {
-            # negation (e.g. [input!="text"]) isn't implemented in CSS, but include it anyway:
-            if ($2 eq '!=') {
-                push @parts, "[\@$1!='$3]";
-            } elsif ($2 eq '~=') { # substring attribute match
-                push @parts, "[contains(concat(' ', \@$1, ' '), ' $3 ')]";
-            } elsif ($2 eq '*=') { # real substring attribute match
-                push @parts, "[contains($1, '$3')]";
-            } elsif ($2 eq '|=') {
-                push @parts, "[\@$1='$3' or starts-with(\@$1, '$3-')]";
-            } else { # exact match
-                push @parts, "[\@$1='$3']";
-            }
+            push @parts, "[", convert_attribute_match( $1, $2, $3 ), "]";
+            # XXX Why don't we need to output a tagname here?
         } elsif ($rule =~ s/$reg->{attr1}//) {
             # If we have no tag output yet, write the tag:
             if (! $wrote_tag++) {
@@ -120,15 +130,7 @@ sub to_xpath {
         if ($rule =~ s/$reg->{attrN}//) {
             my $sub_rule = $1;
             if ($sub_rule =~ s/$reg->{attr2}//) {
-                if ($2 eq '=') {
-                    push @parts, "[\@$1!='$3']";
-                } elsif ($2 eq '~=') {
-                    push @parts, "[not(contains(concat(' ', \@$1, ' '), ' $3 '))]";
-                } elsif ($2 eq '*=') {
-                    push @parts, "[not(contains($1, '$3'))]";
-                } elsif ($2 eq '|=') {
-                    push @parts, "[not(\@$1='$3' or starts-with(\@$1, '$3-'))]";
-                }
+                push @parts, "[not(", convert_attribute_match( $1, $2, $3 ), ")]";
             } elsif ($sub_rule =~ s/$reg->{attr1}//) {
                 push @parts, "[not(\@$1)]";
             } else {

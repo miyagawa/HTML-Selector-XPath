@@ -104,6 +104,24 @@ E[foo~="warning"]
 
 ===
 --- selector
+E[foo^="warning"]
+--- xpath
+//E[starts-with(@foo,'warning')]
+
+===
+--- selector
+E:not([foo^="warning"])
+--- xpath
+//E[not(starts-with(@foo,'warning'))]
+
+===
+--- selector
+E[foo$="warning"]
+--- xpath
+//E[ends-with(@foo,'warning')]
+
+===
+--- selector
 E[lang|="en"]
 --- xpath
 //E[@lang='en' or starts-with(@lang, 'en-')]
