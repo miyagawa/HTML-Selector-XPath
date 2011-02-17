@@ -4,6 +4,7 @@ Revision history for Perl extension HTML::Selector::XPath
       - Add CSS3 "=$" operator
       - Add CSS3 "=^" operator
       - Add complex subexpressions for :not()
+      - Add :empty selector
 
 0.05 Thu Feb 17 09:08:06 PST 2011
       - Add CSS3 "=*" operator for real substring matching (Corion)
