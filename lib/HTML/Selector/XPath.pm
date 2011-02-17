@@ -176,10 +176,8 @@ sub to_xpath {
             } elsif ($match =~ /\+/) {
                 push @parts, "/following-sibling::*[1]/self::";
                 $tag_index = $#parts;
-                #@next_parts = ('*[1]/self::');
             } elsif ($match =~ /\~/) {
                 push @parts, "/following-sibling::";
-                #@next_parts = ('*[1]/self::');
             } else {
                 push @parts, "//";
             }
