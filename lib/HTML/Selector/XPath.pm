@@ -217,6 +217,9 @@ HTML::Selector::XPath - CSS Selector to XPath compiler
   use HTML::Selector::XPath 'selector_to_xpath';
   my $xpath = selector_to_xpath('div.foo');
 
+  my $relative = selector_to_xpath('div.foo', root => '/html/body/p' );
+  # /html/body/p/div[contains(concat(' ', @class, ' '), ' foo ')]
+
 =head1 DESCRIPTION
 
 HTML::Selector::XPath is a utility function to compile full set of
