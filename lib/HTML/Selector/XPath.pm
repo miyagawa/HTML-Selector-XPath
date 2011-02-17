@@ -11,7 +11,7 @@ our @EXPORT_OK = qw(selector_to_xpath);
 use Carp;
 
 sub selector_to_xpath {
-    __PACKAGE__->new(shift)->to_xpath;
+    __PACKAGE__->new(shift)->to_xpath(@_);
 }
 
 my $reg = {
@@ -64,8 +64,10 @@ sub convert_attribute_match {
 sub to_xpath {
     my $self = shift;
     my $rule = $self->{expression} or return;
+    my %parms = @_;
+    my $root = $parms{root} || '/';
 
-    my @parts = ("//");
+    my @parts = ("$root/", "*");
     my $last_rule = '';
     my @next_parts;
 
@@ -189,7 +191,7 @@ sub to_xpath {
 
         # Match commas
         if ($rule =~ s/$reg->{comma}//) {
-            push @parts, " | ", "//", ; # ending one rule and beginning another
+            push @parts, " | ", "$root/", "*"; # ending one rule and beginning another
             undef $tag;
             undef $wrote_tag;
         }
