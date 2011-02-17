@@ -162,3 +162,15 @@ E:not([@href*="bar"])
 F > E:nth-of-type(3)
 --- xpath
 //F/E[3]
+
+===
+--- selector
+E ~ F
+--- xpath
+//E/following-sibling::F
+
+===
+--- selector
+E ~ F.foo
+--- xpath
+//E/following-sibling::F[contains(concat(' ', @class, ' '), ' foo ')]

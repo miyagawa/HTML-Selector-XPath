@@ -24,7 +24,7 @@ my $reg = {
     attrN   => qr/^:not\((.*?)\)/i,
     pseudo  => qr/^:([()a-z0-9_-]+)/i,
     # adjacency/direct descendance
-    combinator => qr/^(\s*[>+\s])/i,
+    combinator => qr/^(\s*[>+~\s])/i,
     # rule separator
     comma => qr/^\s*,/i,
 };
@@ -133,7 +133,7 @@ sub to_xpath {
             }
         }
 
-        # Match combinators (> and +)
+        # Match combinators (>, + and ~)
         if ($rule =~ s/$reg->{combinator}//) {
             my $match = $1;
             if ($match =~ />/) {
@@ -141,6 +141,9 @@ sub to_xpath {
             } elsif ($match =~ /\+/) {
                 push @parts, "/following-sibling::";
                 @next_parts = ('*[1]/self::');
+            } elsif ($match =~ /\~/) {
+                push @parts, "/following-sibling::";
+                #@next_parts = ('*[1]/self::');
             } else {
                 push @parts, "//";
             }
