@@ -67,7 +67,7 @@ sub to_xpath {
     my %parms = @_;
     my $root = $parms{root} || '/';
 
-    my @parts = ("$root/", "*");
+    my @parts = ("$root/");
     my $last_rule = '';
     my @next_parts;
 
@@ -191,7 +191,7 @@ sub to_xpath {
 
         # Match commas
         if ($rule =~ s/$reg->{comma}//) {
-            push @parts, " | ", "$root/", "*"; # ending one rule and beginning another
+            push @parts, " | ", "$root/"; # ending one rule and beginning another
             undef $tag;
             undef $wrote_tag;
         }
