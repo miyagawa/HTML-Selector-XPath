@@ -227,3 +227,9 @@ E ~ *
 .foo ~ .bar
 --- xpath
 //*[contains(concat(' ', @class, ' '), ' foo ')]/following-sibling::*[contains(concat(' ', @class, ' '), ' bar ')]
+
+===
+--- selector
+> em
+--- xpath
+//*/em
