@@ -159,7 +159,6 @@ sub to_xpath {
             $index = @parts - 1;
         }
     }
-
     return join '', @parts;
 }
 
