@@ -45,11 +45,13 @@ sub to_xpath {
     my $self = shift;
     my $rule = $self->{expression} or return;
 
-    my $index = 1;
-    my @parts = ("//", "*");
+    my @parts = ("//");
     my $last_rule = '';
     my @next_parts;
 
+    my $tag;
+    my $wrote_tag;
+    my $tag_index;
     # Loop through each "unit" of the rule
     while (length $rule && $rule ne $last_rule) {
         $last_rule = $rule;
@@ -57,24 +59,39 @@ sub to_xpath {
         $rule =~ s/^\s*|\s*$//g;
         last unless length $rule;
 
+        # Prepend explicit first selector if we have an implicit selector
+        # (that is, if we start with a combinator)
+        if ($rule =~ /$reg->{combinator}/) {
+            $rule = "* $rule";
+        };
+
         # Match elements
         if ($rule =~ s/$reg->{element}//) {
+            my ($id_class,$name,$lang) = ($1,$2,$3);
 
             # to add *[1]/self:: for follow-sibling
             if (@next_parts) {
-                push @parts, @next_parts, (pop @parts);
-                $index += @next_parts;
+                push @parts, @next_parts; #, (pop @parts);
                 @next_parts = ();
             }
 
-            if ($1 eq '#') { # ID
-                push @parts, "[\@id='$2']";
-            } elsif ($1 eq '.') { # class
-                push @parts, "[contains(concat(' ', \@class, ' '), ' $2 ')]";
+            if ($id_class eq '') {
+                $tag = $name || '*';
             } else {
-                $parts[$index] = $5 || $2;
+                $tag = '*';
             }
-        }
+            if (! $wrote_tag++) {
+                push @parts, $tag;
+                $tag_index = $#parts;
+            };
+
+            # XXX Shouldn't the RE allow both, ID and class?
+            if ($id_class eq '#') { # ID
+                push @parts, "[\@id='$name']";
+            } elsif ($id_class eq '.') { # class
+                push @parts, "[contains(concat(' ', \@class, ' '), ' $name ')]";
+            };
+        };
 
         # Match attribute selectors
         if ($rule =~ s/$reg->{attr2}//) {
@@ -91,6 +108,11 @@ sub to_xpath {
                 push @parts, "[\@$1='$3']";
             }
         } elsif ($rule =~ s/$reg->{attr1}//) {
+            # If we have no tag output yet, write the tag:
+            if (! $wrote_tag++) {
+                push @parts, '*';
+                $tag_index = $#parts;
+            };
             push @parts, "[\@$1]";
         }
 
@@ -117,7 +139,10 @@ sub to_xpath {
         # Ignore pseudoclasses/pseudoelements
         while ($rule =~ s/$reg->{pseudo}//) {
             if ( $1 eq 'first-child') {
-                $parts[$#parts] = '*[1]/self::' . $parts[$#parts];
+                #$parts[$#parts] = '*[1]/self::' . $parts[$#parts];
+                # Replace the start of our current rule with a rule
+                # enforcing the current child
+                $parts[$tag_index] = '*[1]/self::' . $parts[$tag_index];
             } elsif ( $1 eq 'last-child') {
                 push @parts, '[not(following-sibling::*)]';
             } elsif ($1 =~ /^lang\(([\w\-]+)\)$/) {
@@ -143,8 +168,9 @@ sub to_xpath {
             if ($match =~ />/) {
                 push @parts, "/";
             } elsif ($match =~ /\+/) {
-                push @parts, "/following-sibling::";
-                @next_parts = ('*[1]/self::');
+                push @parts, "/following-sibling::*[1]/self::";
+                $tag_index = $#parts;
+                #@next_parts = ('*[1]/self::');
             } elsif ($match =~ /\~/) {
                 push @parts, "/following-sibling::";
                 #@next_parts = ('*[1]/self::');
@@ -153,14 +179,15 @@ sub to_xpath {
             }
 
             # new context
-            $index = @parts;
-            push @parts, "*";
+            undef $tag;
+            undef $wrote_tag;
         }
 
         # Match commas
         if ($rule =~ s/$reg->{comma}//) {
-            push @parts, " | ", "//", "*"; # ending one rule and beginning another
-            $index = @parts - 1;
+            push @parts, " | ", "//", ; # ending one rule and beginning another
+            undef $tag;
+            undef $wrote_tag;
         }
     }
     return join '', @parts;

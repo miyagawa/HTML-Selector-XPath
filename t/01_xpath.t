@@ -38,6 +38,12 @@ E > F
 
 ===
 --- selector
+p.pastoral.marine
+--- xpath
+//p[contains(concat(' ', @class, ' '), ' pastoral ')][contains(concat(' ', @class, ' '), ' marine ')]
+
+===
+--- selector
 E:first-child
 --- xpath
 //*[1]/self::E
@@ -233,3 +239,155 @@ E ~ *
 > em
 --- xpath
 //*/em
+
+===
+--- selector
+:first-child
+--- xpath
+//*[1]/self::*
+
+===
+--- selector
+E.c:first-child
+--- xpath
+//*[1]/self::E[contains(concat(' ', @class, ' '), ' c ')]
+
+===
+--- selector
+E:first-child.c
+--- xpath
+//*[1]/self::E[contains(concat(' ', @class, ' '), ' c ')]
+
+===
+--- selector
+E#i:first-child
+--- xpath
+//*[1]/self::E[@id='i']
+
+===
+--- selector
+E:first-child#i
+--- xpath
+//*[1]/self::E[@id='i']
+
+===
+--- selector
+:lang(c)
+--- xpath
+//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')]
+
+===
+--- selector
+:lang(c)#i
+--- xpath
+//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+
+===
+--- selector
+#i:lang(c)
+--- xpath
+//*[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')]
+
+===
+--- selector
+*:lang(c)#i
+--- xpath
+//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+
+===
+--- selector
+E:lang(c)#i
+--- xpath
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+
+===
+--- selector
+E#i:lang(c)
+--- xpath
+//E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')]
+
+===
+--- selector
+*:lang(c)#i:first-child
+--- xpath
+//*[1]/self::*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+
+===
+--- selector
+E:lang(c)#i:first-child
+--- xpath
+//*[1]/self::E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+
+===
+--- selector
+E:lang(c):first-child#i
+--- xpath
+//*[1]/self::E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+
+===
+--- selector
+E#i:lang(c):first-child
+--- xpath
+//*[1]/self::E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')]
+
+===
+--- selector
+#bar
+--- xpath
+//*[@id='bar']
+
+===
+--- selector
+*#bar
+--- xpath
+//*[@id='bar']
+
+===
+--- selector
+*[foo]
+--- xpath
+//*[@foo]
+
+===
+--- selector
+[foo]
+--- xpath
+//*[@foo]
+
+
+===
+--- selector
+.warning
+--- xpath
+//*[contains(concat(' ', @class, ' '), ' warning ')]
+
+===
+--- selector
+*.warning
+--- xpath
+//*[contains(concat(' ', @class, ' '), ' warning ')]
+
+ 
+===
+--- selector
+:nth-child(1)
+--- xpath
+//*[count(preceding-sibling::*) = 0]
+
+===
+--- selector
+*:nth-child(1)
+--- xpath
+//*[count(preceding-sibling::*) = 0]
+
+===
+--- selector
+E:nth-child(1)
+--- xpath
+//E[count(preceding-sibling::*) = 0]
+
+===
+--- selector
+E:nth-child(2)
+--- xpath
+//E[count(preceding-sibling::*) = 1]
