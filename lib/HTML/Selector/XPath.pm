@@ -213,8 +213,8 @@ HTML::Selector::XPath - CSS Selector to XPath compiler
 
 =head1 DESCRIPTION
 
-HTML::Selector::XPath is a utility function to compile CSS2 selector
-to the equivalent XPath expression.
+HTML::Selector::XPath is a utility function to compile full set of
+CSS2 and partial CSS3 selectors to the equivalent XPath expression.
 
 =head1 CAVEATS
 
