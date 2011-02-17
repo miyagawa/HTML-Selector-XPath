@@ -116,7 +116,6 @@ sub to_xpath {
         # Match attribute selectors
         if ($rule =~ s/$reg->{attr2}//) {
             push @parts, "[", convert_attribute_match( $1, $2, $3 ), "]";
-            # XXX Why don't we need to output a tagname here?
         } elsif ($rule =~ s/$reg->{attr1}//) {
             # If we have no tag output yet, write the tag:
             if (! $wrote_tag++) {
