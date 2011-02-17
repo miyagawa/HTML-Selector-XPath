@@ -229,3 +229,63 @@ p ~ a
 p ~ a.foo
 --- expected
 <a class="foo" href="Yes">Yes</a>
+
+===
+--- input
+<a href="No">No (no preceding sibling)</a>
+<p>A header</p>
+<a class="foo" href="Yes">Yes</a>
+<div>Some description</div>
+<p>
+<div>Another <b>two level deep description</b></div>
+</p>
+<a href="foobar">Foobar</a>
+<a href="barred">Barred</a>
+<p>
+<a class="foo" href="No">No (child, not sibling)</a>
+<div>But some description</p>
+</p>
+<div>Some description that is not output</div>
+--- selector
+p *:contains("description")
+--- expected
+<b>two level deep description</b>
+<div>But some description</div>
+
+===
+--- input
+<a href="No">No (no preceding sibling)</a>
+<p>A header</p>
+<a class="foo" href="Yes">Yes</a>
+<div>Some description</div>
+<div>Another <b>two level deep description</b></div>
+<a href="foobar">Foobar</a>
+<a href="barred">Barred</a>
+<p>
+<div>Some more description</div>
+<a class="foo" href="No">No (child, not sibling)</a>
+</p>
+<div>Some description that is not output</div>
+--- selector
+p > *:contains("description")
+--- expected
+<div>Some more description</div>
+===
+--- input
+<a href="No">No (no preceding sibling)</a>
+<p>A header</p>
+<a class="foo" href="Yes">Yes</a>
+<div>Some description</div>
+<div>Another <b>two level deep description</b></div>
+<a href="foobar">Foobar</a>
+<a href="barred">Barred</a>
+<p>
+<a class="foo" href="No">No (child, not sibling)</a>
+</p>
+<div>Some more description</div>
+--- selector
+*:contains("description")
+--- expected
+<div>Some description</div>
+<b>two level deep description</b>
+<div>Some more description</div>

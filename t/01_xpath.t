@@ -174,3 +174,15 @@ E ~ F
 E ~ F.foo
 --- xpath
 //E/following-sibling::F[contains(concat(' ', @class, ' '), ' foo ')]
+
+===
+--- selector
+E:contains("Hello")
+--- xpath
+//E[text()[contains(string(.),"Hello")]]
+
+===
+--- selector
+E:contains( "Hello" )
+--- xpath
+//E[text()[contains(string(.),"Hello")]]
