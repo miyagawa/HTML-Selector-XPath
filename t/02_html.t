@@ -289,3 +289,14 @@ p > *:contains("description")
 <div>Some description</div>
 <b>two level deep description</b>
 <div>Some more description</div>
+===
+--- input
+<div>Some description</div>
+<div id="empty"></div>
+<div>Another <b>two level deep description</b></div>
+<div>Some more description</div>
+--- selector
+:empty
+--- expected
+<head></head>
+<div id="empty"></div>

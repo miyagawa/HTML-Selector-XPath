@@ -163,6 +163,8 @@ sub to_xpath {
             } elsif ( $1 eq 'root') {
                 # This will give surprising results if you do E > F:root
                 $parts[0] = "/";
+            } elsif ( $1 eq 'empty') {
+                push @parts, "[not(* or text())]";
             } else {
                 Carp::croak "Can't translate '$1' pseudo-class";
             }

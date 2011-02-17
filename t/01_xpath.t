@@ -421,3 +421,14 @@ E:nth-child(2)
 E:root
 --- xpath
 /E
+
+===
+--- selector
+E:empty
+--- xpath
+//E[not(* or text())]
+===
+--- selector
+:empty
+--- xpath
+//*[not(* or text())]
