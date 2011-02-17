@@ -225,6 +225,33 @@ HTML::Selector::XPath - CSS Selector to XPath compiler
 HTML::Selector::XPath is a utility function to compile full set of
 CSS2 and partial CSS3 selectors to the equivalent XPath expression.
 
+=head1 FUNCTIONS and METHODS
+
+=over 4
+
+=item selector_to_xpath
+
+  $xpath = selector_to_xpath($selector);
+
+Shortcut for C<< HTML::Selector->new(shift)->to_xpath(@_) >>. Exported upon request.
+
+=item new
+
+  $sel = HTML::Selector::XPath->new($selector);
+
+Creates a new object.
+
+=item to_xpath
+
+  $xpath = $sel->to_xpath;
+  $xpath = $sel->to_xpath(root => "."); # ./foo instead of //foo
+
+Returns the translated XPath expression. You can optionally pass
+C<root> parameter, to specify which root to start the expression. It
+defaults to C</>.
+
+=back
+
 =head1 CAVEATS
 
 =head2 CSS SELECTOR VALIDATION
