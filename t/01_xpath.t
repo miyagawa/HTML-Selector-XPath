@@ -432,3 +432,15 @@ E:empty
 :empty
 --- xpath
 //*[not(* or text())]
+
+===
+--- selector
+p , :root
+--- xpath
+//p | /*
+
+===
+--- selector
+p , q
+--- xpath
+//p | //q

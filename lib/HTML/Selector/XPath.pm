@@ -24,9 +24,9 @@ my $reg = {
     attrN   => qr/^:not\((.*?)\)/i,
     pseudo  => qr/^:([()a-z0-9_-]+)/i,
     # adjacency/direct descendance
-    combinator => qr/^(\s*[>+~\s])/i,
+    combinator => qr/^(\s*[>+~\s](?!,))/i,
     # rule separator
-    comma => qr/^\s*,/i,
+    comma => qr/^\s*,\s*/i,
 };
 
 
@@ -74,6 +74,7 @@ sub to_xpath {
     my $tag;
     my $wrote_tag;
     my $tag_index;
+    my $root_index = 0; # points to the current root
     # Loop through each "unit" of the rule
     while (length $rule && $rule ne $last_rule) {
         $last_rule = $rule;
@@ -162,7 +163,7 @@ sub to_xpath {
                 push @parts, qq{[text()[contains(string(.),"$1")]]};
             } elsif ( $1 eq 'root') {
                 # This will give surprising results if you do E > F:root
-                $parts[0] = "/";
+                $parts[$root_index] = "$root/";
             } elsif ( $1 eq 'empty') {
                 push @parts, "[not(* or text())]";
             } else {
@@ -170,7 +171,7 @@ sub to_xpath {
             }
         }
 
-        # Match combinators (>, + and ~)
+        # Match combinators (whitespace, >, + and ~)
         if ($rule =~ s/$reg->{combinator}//) {
             my $match = $1;
             if ($match =~ />/) {
@@ -180,8 +181,10 @@ sub to_xpath {
                 $tag_index = $#parts;
             } elsif ($match =~ /\~/) {
                 push @parts, "/following-sibling::";
+            } elsif ($match =~ /^\s*$/) {
+                push @parts, "//"
             } else {
-                push @parts, "//";
+                die "Weird combinator '$match'"
             }
 
             # new context
@@ -192,6 +195,7 @@ sub to_xpath {
         # Match commas
         if ($rule =~ s/$reg->{comma}//) {
             push @parts, " | ", "$root/"; # ending one rule and beginning another
+            $root_index = $#parts;
             undef $tag;
             undef $wrote_tag;
         }
@@ -219,6 +223,9 @@ HTML::Selector::XPath - CSS Selector to XPath compiler
 
   my $relative = selector_to_xpath('div.foo', root => '/html/body/p' );
   # /html/body/p/div[contains(concat(' ', @class, ' '), ' foo ')]
+
+  my $relative = selector_to_xpath('div:root', root => '/html/body/p' );
+  # /html/body/p/div
 
 =head1 DESCRIPTION
 
