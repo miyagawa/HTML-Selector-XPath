@@ -163,7 +163,7 @@ sub to_xpath {
                 push @parts, qq{[text()[contains(string(.),"$1")]]};
             } elsif ( $1 eq 'root') {
                 # This will give surprising results if you do E > F:root
-                $parts[$root_index] = "$root/";
+                $parts[$root_index] = $root;
             } elsif ( $1 eq 'empty') {
                 push @parts, "[not(* or text())]";
             } else {
