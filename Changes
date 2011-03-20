@@ -1,12 +1,15 @@
 Revision history for Perl extension HTML::Selector::XPath
 
-0.07 to be released
+0.08 to be released
       - Fix bug when combining selectors (p , q). Whitespace created invalid
         XPath expressions there. (Corion)
       - Fix bug when combining :root selectors as the second selector.
         The first selector was modified. (Corion)
       - :root now acts relative to the given "root" option,
         not the document root (Corion)
+
+0.07 Mon Mar  7 17:07:39 PST 2011
+      - Added a COPYRIGHT section
 
 0.06 Thu Feb 17 13:54:45 PST 2011
       - Add CSS3 "=$" operator (Corion)
