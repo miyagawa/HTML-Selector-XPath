@@ -11,7 +11,8 @@ filters { selector => 'chomp', xpath => 'chomp' };
 sub parse_pseudo {
     my ($self, $pseudo, $expr) = @_;
     return q{[@type='foo']} if $pseudo eq 'foo';
-    return "" if $pseudo eq 'bar';
+    return qq{[\@type='bar-$1']} if $pseudo =~ /^bar\(/ && $$expr =~ s/^"([^"]+)"\)//;
+    return "" if $pseudo eq 'quax';
 }
 
 run {
@@ -29,6 +30,12 @@ __END__
 
 ===
 --- selector
-:bar
+:bar("baz")
+--- xpath
+//*[@type='bar-baz']
+
+===
+--- selector
+:quax
 --- xpath
 //*

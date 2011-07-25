@@ -141,7 +141,7 @@ sub to_xpath {
 
         # Ignore pseudoclasses/pseudoelements
         while ($rule =~ s/$reg->{pseudo}//) {
-            if ( my @expr = $self->parse_pseudo($1) ) {
+            if ( my @expr = $self->parse_pseudo($1, \$rule) ) {
                 push @parts, @expr;
             } elsif ( $1 eq 'first-child') {
                 #$parts[$#parts] = '*[1]/self::' . $parts[$#parts];
@@ -266,8 +266,9 @@ defaults to C</>.
 
 This method is called during xpath construction when we encounter a pseudo 
 selector (something that begins with comma). It is passed the selector and 
-is should return one or more xpath sub-expressions to add to the parts 
-if the selector is handled, otherwise return an empty list.
+a reference to the string we are parsing. It should return one or more 
+xpath sub-expressions to add to the parts if the selector is handled, 
+otherwise return an empty list.
 
 =back
 
