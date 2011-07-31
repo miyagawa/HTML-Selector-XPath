@@ -454,3 +454,8 @@ p , q
 div *:not(p) em
 --- xpath
 //div//*[not(self::p)]//em
+===
+--- selector
+div em:only-child
+--- xpath
+//div//em[count(preceding-sibling::*) = 0][count(following-sibling::*) = 0]
