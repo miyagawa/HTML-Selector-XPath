@@ -46,19 +46,19 @@ p.pastoral.marine
 --- selector
 E:first-child
 --- xpath
-//*[1]/self::E
+//E[count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 F E:first-child
 --- xpath
-//F//*[1]/self::E
+//F//E[count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 F > E:first-child
 --- xpath
-//F/*[1]/self::E
+//F/E[count(preceding-sibling::*) = 0]
 
 ===
 --- selector
@@ -262,31 +262,31 @@ E ~ *
 --- selector
 :first-child
 --- xpath
-//*[1]/self::*
+//*[count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 E.c:first-child
 --- xpath
-//*[1]/self::E[contains(concat(' ', @class, ' '), ' c ')]
+//E[contains(concat(' ', @class, ' '), ' c ')][count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 E:first-child.c
 --- xpath
-//*[1]/self::E[contains(concat(' ', @class, ' '), ' c ')]
+//E[count(preceding-sibling::*) = 0][contains(concat(' ', @class, ' '), ' c ')]
 
 ===
 --- selector
 E#i:first-child
 --- xpath
-//*[1]/self::E[@id='i']
+//E[@id='i'][count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 E:first-child#i
 --- xpath
-//*[1]/self::E[@id='i']
+//E[count(preceding-sibling::*) = 0][@id='i']
 
 ===
 --- selector
@@ -328,25 +328,25 @@ E#i:lang(c)
 --- selector
 *:lang(c)#i:first-child
 --- xpath
-//*[1]/self::*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 E:lang(c)#i:first-child
 --- xpath
-//*[1]/self::E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0]
 
 ===
 --- selector
 E:lang(c):first-child#i
 --- xpath
-//*[1]/self::E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0][@id='i']
 
 ===
 --- selector
 E#i:lang(c):first-child
 --- xpath
-//*[1]/self::E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')]
+//E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0]
 
 ===
 --- selector
