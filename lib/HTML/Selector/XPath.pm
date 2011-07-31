@@ -21,7 +21,7 @@ my $reg = {
     attr1   => qr/^\[([^\]]*)\]/,
     # attribute value match
     attr2   => qr/^\[\s*([^*~\|=\s:^\$]+)\s*([~\|*^\$]?=)\s*"([^"]+)"\s*\]/i,
-    attrN   => qr/^:not\((.*?)\)/i,
+    attrN   => qr/^:not\((.*?)\)/i, # this should be a parentheses matcher instead of a RE!
     pseudo  => qr/^:([()a-z0-9_-]+)/i,
     # adjacency/direct descendance
     combinator => qr/^(\s*[>+~\s](?!,))/i,
@@ -136,7 +136,11 @@ sub to_xpath {
             } elsif ($sub_rule =~ s/$reg->{attr1}//) {
                 push @parts, "[not(\@$1)]";
             } else {
-                Carp::croak "Can't translate '$sub_rule' inside :not()";
+                my $xpath = selector_to_xpath($sub_rule);
+                $xpath =~ s!^//!!;
+                push @parts, "[not(self::$xpath)]";
+            #} else {
+            #    Carp::croak "Can't translate '$sub_rule' inside :not()";
             }
         }
 

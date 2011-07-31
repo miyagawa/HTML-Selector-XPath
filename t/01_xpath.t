@@ -444,3 +444,8 @@ p , :root
 p , q
 --- xpath
 //p | //q
+===
+--- selector
+div *:not(p) em
+--- xpath
+//div//*[not(self::p)]//em

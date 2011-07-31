@@ -14,7 +14,14 @@ run {
     $tree->parse($block->input);
     $tree->eof;
 
-    my @nodes = $tree->findnodes( HTML::Selector::XPath->new($block->selector)->to_xpath );
+    my $expr;
+    if ($block->selector =~ m!^/!) {
+        $expr = $block->selector;
+    } else {
+        $expr = HTML::Selector::XPath->new($block->selector)->to_xpath
+    };
+    diag $expr;
+    my @nodes = $tree->findnodes( $expr );
     is_deeply [ map $_->as_XML, @nodes ], $block->expected, $block->selector;
 }
 
@@ -300,3 +307,21 @@ p > *:contains("description")
 --- expected
 <head></head>
 <div id="empty"></div>
+===
+--- input
+<div><strong><em>here</em></strong></div>
+<div><p><em>not here</em></p></div>
+--- selector
+div *:not(p) em
+--- expected
+<em>here</em>
+===
+--- input
+<html><head></head><body>
+<div><strong><em>here</em></strong></div>
+<div><p><em>not here</em></p></div>
+</body></html>
+--- selector
+//div/*[not(self::p)]/em
+--- expected
+<em>here</em>
