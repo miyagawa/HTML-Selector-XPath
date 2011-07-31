@@ -67,6 +67,12 @@ sub nth_child {
     "[count(preceding-sibling::*) = $n]"
 };
 
+sub nth_last_child {
+    my $n = shift;
+    $n--;
+    "[count(following-sibling::*) = $n]"
+};
+
 sub to_xpath {
     my $self = shift;
     my $rule = $self->{expression} or return;
@@ -156,7 +162,9 @@ sub to_xpath {
                 # Translates to :nth-child(1)
                 push @parts, nth_child(1);
             } elsif ( $1 eq 'last-child') {
-                push @parts, '[not(following-sibling::*)]';
+                push @parts, nth_last_child(1);
+            } elsif ( $1 eq 'only-child') {
+                push @parts, nth_child(1), nth_last_child(1);
             } elsif ($1 =~ /^lang\(([\w\-]+)\)$/) {
                 push @parts, "[\@xml:lang='$1' or starts-with(\@xml:lang, '$1-')]";
             } elsif ($1 =~ /^nth-child\((\d+)\)$/) {
