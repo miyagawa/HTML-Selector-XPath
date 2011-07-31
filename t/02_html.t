@@ -337,3 +337,16 @@ div *:not(p) em
 //div/*[not(self::p)]/em
 --- expected
 <em>here</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+</div>
+<div><p><em>everywhere</em></p></div>
+</body></html>
+--- selector
+div em:only-child
+--- expected
+<em>everywhere</em>
