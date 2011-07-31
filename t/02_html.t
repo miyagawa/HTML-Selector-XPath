@@ -350,3 +350,71 @@ div *:not(p) em
 div em:only-child
 --- expected
 <em>everywhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-child(2n)
+--- expected
+<em>there</em>
+<em>elsewhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-child(2n+1)
+--- expected
+<em>here</em>
+<em>everywhere</em>
+<em>nowhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+    <em>anywhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-last-child(3n)
+--- expected
+<em>here</em>
+<em>elsewhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>anywhere</em>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-last-child(2n+1)
+--- expected
+<em>here</em>
+<em>everywhere</em>
+<em>nowhere</em>

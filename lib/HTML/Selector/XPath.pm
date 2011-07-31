@@ -22,7 +22,7 @@ my $reg = {
     # attribute value match
     attr2   => qr/^\[\s*([^*~\|=\s:^\$]+)\s*([~\|*^\$]?=)\s*"([^"]+)"\s*\]/i,
     attrN   => qr/^:not\((.*?)\)/i, # this should be a parentheses matcher instead of a RE!
-    pseudo  => qr/^:([()a-z0-9_-]+)/i,
+    pseudo  => qr/^:([()a-z0-9_+-]+)/i,
     # adjacency/direct descendance
     combinator => qr/^(\s*[>+~\s](?!,))/i,
     # rule separator
@@ -61,16 +61,33 @@ sub convert_attribute_match {
     }
 };
 
+sub _generate_child {
+    my ($direction,$a,$b) = @_;
+    if ($a == 0) { # 0n+b
+        $b--;
+        "[count($direction-sibling::*) = $b and parent::*]"
+    } elsif ($a > 0) { # an + b
+        return "[not((count($direction-sibling::*)+1)<$b) and ((count($direction-sibling::*) + 1) - $b) mod $a = 0 and parent::*]"
+    } else { # -an + $b
+        $a = -$a;
+        return "[not((count($direction-sibling::*)+1)>$b) and (($b - (count($direction-sibling::*) + 1)) mod $a) = 0 and parent::*]"
+    };
+};
+
 sub nth_child {
-    my $n = shift;
-    $n--;
-    "[count(preceding-sibling::*) = $n]"
+    my ($a,$b) = @_;
+    if (@_ == 1) {
+        ($a,$b) = (0,$a);
+    };
+    _generate_child('preceding', $a, $b);
 };
 
 sub nth_last_child {
-    my $n = shift;
-    $n--;
-    "[count(following-sibling::*) = $n]"
+    my ($a,$b) = @_;
+    if (@_ == 1) {
+        ($a,$b) = (0,$a);
+    };
+    _generate_child('following', $a, $b);
 };
 
 sub to_xpath {
@@ -169,6 +186,12 @@ sub to_xpath {
                 push @parts, "[\@xml:lang='$1' or starts-with(\@xml:lang, '$1-')]";
             } elsif ($1 =~ /^nth-child\((\d+)\)$/) {
                 push @parts, nth_child($1);
+            } elsif ($1 =~ /^nth-child\((\d+)n(?:\+(\d+))?\)$/) {
+                push @parts, nth_child($1, $2||0);
+            } elsif ($1 =~ /^nth-last-child\((\d+)\)$/) {
+                push @parts, nth_last_child($1);
+            } elsif ($1 =~ /^nth-last-child\((\d+)n(?:\+(\d+))?\)$/) {
+                push @parts, nth_last_child($1, $2||0);
             } elsif ($1 =~ /^first-of-type$/) {
                 push @parts, "[1]";
             } elsif ($1 =~ /^nth-of-type\((\d+)\)$/) {

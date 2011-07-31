@@ -46,19 +46,19 @@ p.pastoral.marine
 --- selector
 E:first-child
 --- xpath
-//E[count(preceding-sibling::*) = 0]
+//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 F E:first-child
 --- xpath
-//F//E[count(preceding-sibling::*) = 0]
+//F//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 F > E:first-child
 --- xpath
-//F/E[count(preceding-sibling::*) = 0]
+//F/E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
@@ -148,26 +148,26 @@ foo.bar, bar
 --- selector
 E:nth-child(1)
 --- xpath
-//E[count(preceding-sibling::*) = 0]
+//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:last-child
 --- xpath
-//E[count(following-sibling::*) = 0]
+//E[count(following-sibling::*) = 0 and parent::*]
 
 
 ===
 --- selector
 F E:last-child
 --- xpath
-//F//E[count(following-sibling::*) = 0]
+//F//E[count(following-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 F > E:last-child
 --- xpath
-//F/E[count(following-sibling::*) = 0]
+//F/E[count(following-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
@@ -262,36 +262,36 @@ E ~ *
 --- selector
 :first-child
 --- xpath
-//*[count(preceding-sibling::*) = 0]
+//*[count(preceding-sibling::*) = 0 and parent::*]
 ===
 --- selector
 :last-child
 --- xpath
-//*[count(following-sibling::*) = 0]
+//*[count(following-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E.c:first-child
 --- xpath
-//E[contains(concat(' ', @class, ' '), ' c ')][count(preceding-sibling::*) = 0]
+//E[contains(concat(' ', @class, ' '), ' c ')][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:first-child.c
 --- xpath
-//E[count(preceding-sibling::*) = 0][contains(concat(' ', @class, ' '), ' c ')]
+//E[count(preceding-sibling::*) = 0 and parent::*][contains(concat(' ', @class, ' '), ' c ')]
 
 ===
 --- selector
 E#i:first-child
 --- xpath
-//E[@id='i'][count(preceding-sibling::*) = 0]
+//E[@id='i'][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:first-child#i
 --- xpath
-//E[count(preceding-sibling::*) = 0][@id='i']
+//E[count(preceding-sibling::*) = 0 and parent::*][@id='i']
 
 ===
 --- selector
@@ -333,25 +333,25 @@ E#i:lang(c)
 --- selector
 *:lang(c)#i:first-child
 --- xpath
-//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0]
+//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:lang(c)#i:first-child
 --- xpath
-//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0]
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:lang(c):first-child#i
 --- xpath
-//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0][@id='i']
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0 and parent::*][@id='i']
 
 ===
 --- selector
 E#i:lang(c):first-child
 --- xpath
-//E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0]
+//E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
@@ -395,25 +395,25 @@ E#i:lang(c):first-child
 --- selector
 :nth-child(1)
 --- xpath
-//*[count(preceding-sibling::*) = 0]
+//*[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 *:nth-child(1)
 --- xpath
-//*[count(preceding-sibling::*) = 0]
+//*[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:nth-child(1)
 --- xpath
-//E[count(preceding-sibling::*) = 0]
+//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:nth-child(2)
 --- xpath
-//E[count(preceding-sibling::*) = 1]
+//E[count(preceding-sibling::*) = 1 and parent::*]
 
 ===
 --- selector
@@ -458,4 +458,4 @@ div *:not(p) em
 --- selector
 div em:only-child
 --- xpath
-//div//em[count(preceding-sibling::*) = 0][count(following-sibling::*) = 0]
+//div//em[count(preceding-sibling::*) = 0 and parent::*][count(following-sibling::*) = 0 and parent::*]
