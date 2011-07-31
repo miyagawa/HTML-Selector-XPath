@@ -61,6 +61,12 @@ sub convert_attribute_match {
     }
 };
 
+sub nth_child {
+    my $n = shift;
+    $n--;
+    "[count(preceding-sibling::*) = $n]"
+};
+
 sub to_xpath {
     my $self = shift;
     my $rule = $self->{expression} or return;
@@ -147,16 +153,14 @@ sub to_xpath {
         # Ignore pseudoclasses/pseudoelements
         while ($rule =~ s/$reg->{pseudo}//) {
             if ( $1 eq 'first-child') {
-                #$parts[$#parts] = '*[1]/self::' . $parts[$#parts];
-                # Replace the start of our current rule with a rule
-                # enforcing the current child
-                $parts[$tag_index] = '*[1]/self::' . $parts[$tag_index];
+                # Translates to :nth-child(1)
+                push @parts, nth_child(1);
             } elsif ( $1 eq 'last-child') {
                 push @parts, '[not(following-sibling::*)]';
             } elsif ($1 =~ /^lang\(([\w\-]+)\)$/) {
                 push @parts, "[\@xml:lang='$1' or starts-with(\@xml:lang, '$1-')]";
             } elsif ($1 =~ /^nth-child\((\d+)\)$/) {
-                push @parts, "[count(preceding-sibling::*) = @{[ $1 - 1 ]}]";
+                push @parts, nth_child($1);
             } elsif ($1 =~ /^first-of-type$/) {
                 push @parts, "[1]";
             } elsif ($1 =~ /^nth-of-type\((\d+)\)$/) {
@@ -291,6 +295,14 @@ L<http://www.joehewitt.com/blog/2006-03-20.php> and Andrew Dupont's
 patch to Prototype.js on L<http://dev.rubyonrails.org/ticket/5171>,
 but slightly modified using Aristotle Pegaltzis' CSS to XPath
 translation table per L<http://plasmasturm.org/log/444/>
+
+Also see
+
+L<http://www.mail-archive.com/www-archive@w3.org/msg00906.html>
+
+and
+
+L<http://kilianvalkhof.com/2008/css-xhtml/the-css3-not-selector/>
 
 =head1 LICENSE
 
