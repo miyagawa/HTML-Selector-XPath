@@ -65,6 +65,18 @@ ul li:first-child
 --- input
 <ul>
 <li><a href="foo.html">bar</a></li>
+<li><a href="foo.html">blim</a></li>
+<li><a href="foo.html">baz</a></li>
+</ul>
+--- selector
+ul li:last-child
+--- expected
+<li><a href="foo.html">baz</a></li>
+
+===
+--- input
+<ul>
+<li><a href="foo.html">bar</a></li>
 <li class="bar baz"><a href="foo.html">baz</a></li>
 <li class="bar"><a href="foo.html">baz</a></li>
 </ul>

@@ -154,20 +154,20 @@ E:nth-child(1)
 --- selector
 E:last-child
 --- xpath
-//E[not(following-sibling::*)]
+//E[count(following-sibling::*) = 0]
 
 
 ===
 --- selector
 F E:last-child
 --- xpath
-//F//E[not(following-sibling::*)]
+//F//E[count(following-sibling::*) = 0]
 
 ===
 --- selector
 F > E:last-child
 --- xpath
-//F/E[not(following-sibling::*)]
+//F/E[count(following-sibling::*) = 0]
 
 ===
 --- selector
@@ -263,6 +263,11 @@ E ~ *
 :first-child
 --- xpath
 //*[count(preceding-sibling::*) = 0]
+===
+--- selector
+:last-child
+--- xpath
+//*[count(following-sibling::*) = 0]
 
 ===
 --- selector
