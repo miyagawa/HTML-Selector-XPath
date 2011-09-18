@@ -141,7 +141,9 @@ sub to_xpath {
 
         # Ignore pseudoclasses/pseudoelements
         while ($rule =~ s/$reg->{pseudo}//) {
-            if ( $1 eq 'first-child') {
+            if ( my @expr = $self->parse_pseudo($1, \$rule) ) {
+                push @parts, @expr;
+            } elsif ( $1 eq 'first-child') {
                 #$parts[$#parts] = '*[1]/self::' . $parts[$#parts];
                 # Replace the start of our current rule with a rule
                 # enforcing the current child
@@ -199,6 +201,10 @@ sub to_xpath {
     return join '', @parts;
 }
 
+sub parse_pseudo { 
+    # nop
+}    
+
 1;
 __END__
 
@@ -249,6 +255,20 @@ Creates a new object.
 Returns the translated XPath expression. You can optionally pass
 C<root> parameter, to specify which root to start the expression. It
 defaults to C</>.
+
+=back
+
+=head1 SUBCLASSING NOTES
+
+=over 4
+
+=item parse_pseudo
+
+This method is called during xpath construction when we encounter a pseudo 
+selector (something that begins with comma). It is passed the selector and 
+a reference to the string we are parsing. It should return one or more 
+xpath sub-expressions to add to the parts if the selector is handled, 
+otherwise return an empty list.
 
 =back
 
