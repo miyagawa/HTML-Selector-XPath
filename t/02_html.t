@@ -14,7 +14,14 @@ run {
     $tree->parse($block->input);
     $tree->eof;
 
-    my @nodes = $tree->findnodes( HTML::Selector::XPath->new($block->selector)->to_xpath );
+    my $expr;
+    if ($block->selector =~ m!^/!) {
+        $expr = $block->selector;
+    } else {
+        $expr = HTML::Selector::XPath->new($block->selector)->to_xpath
+    };
+    diag $expr;
+    my @nodes = $tree->findnodes( $expr );
     is_deeply [ map $_->as_XML, @nodes ], $block->expected, $block->selector;
 }
 
@@ -53,6 +60,18 @@ ul li
 ul li:first-child
 --- expected
 <li><a href="foo.html">bar</a></li>
+
+===
+--- input
+<ul>
+<li><a href="foo.html">bar</a></li>
+<li><a href="foo.html">blim</a></li>
+<li><a href="foo.html">baz</a></li>
+</ul>
+--- selector
+ul li:last-child
+--- expected
+<li><a href="foo.html">baz</a></li>
 
 ===
 --- input
@@ -300,3 +319,102 @@ p > *:contains("description")
 --- expected
 <head></head>
 <div id="empty"></div>
+===
+--- input
+<div><strong><em>here</em></strong></div>
+<div><p><em>not here</em></p></div>
+--- selector
+div *:not(p) em
+--- expected
+<em>here</em>
+===
+--- input
+<html><head></head><body>
+<div><strong><em>here</em></strong></div>
+<div><p><em>not here</em></p></div>
+</body></html>
+--- selector
+//div/*[not(self::p)]/em
+--- expected
+<em>here</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+</div>
+<div><p><em>everywhere</em></p></div>
+</body></html>
+--- selector
+div em:only-child
+--- expected
+<em>everywhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-child(2n)
+--- expected
+<em>there</em>
+<em>elsewhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-child(2n+1)
+--- expected
+<em>here</em>
+<em>everywhere</em>
+<em>nowhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+    <em>anywhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-last-child(3n)
+--- expected
+<em>here</em>
+<em>elsewhere</em>
+===
+--- input
+<html><head></head><body>
+<div>
+    <em>anywhere</em>
+    <em>here</em>
+    <em>there</em>
+    <em>everywhere</em>
+    <em>elsewhere</em>
+    <em>nowhere</em>
+</div>
+</body></html>
+--- selector
+div em:nth-last-child(2n+1)
+--- expected
+<em>here</em>
+<em>everywhere</em>
+<em>nowhere</em>
