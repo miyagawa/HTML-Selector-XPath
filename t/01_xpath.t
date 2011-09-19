@@ -46,19 +46,19 @@ p.pastoral.marine
 --- selector
 E:first-child
 --- xpath
-//*[1]/self::E
+//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 F E:first-child
 --- xpath
-//F//*[1]/self::E
+//F//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 F > E:first-child
 --- xpath
-//F/*[1]/self::E
+//F/E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
@@ -148,26 +148,26 @@ foo.bar, bar
 --- selector
 E:nth-child(1)
 --- xpath
-//E[count(preceding-sibling::*) = 0]
+//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:last-child
 --- xpath
-//E[not(following-sibling::*)]
+//E[count(following-sibling::*) = 0 and parent::*]
 
 
 ===
 --- selector
 F E:last-child
 --- xpath
-//F//E[not(following-sibling::*)]
+//F//E[count(following-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 F > E:last-child
 --- xpath
-//F/E[not(following-sibling::*)]
+//F/E[count(following-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
@@ -262,31 +262,36 @@ E ~ *
 --- selector
 :first-child
 --- xpath
-//*[1]/self::*
+//*[count(preceding-sibling::*) = 0 and parent::*]
+===
+--- selector
+:last-child
+--- xpath
+//*[count(following-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E.c:first-child
 --- xpath
-//*[1]/self::E[contains(concat(' ', @class, ' '), ' c ')]
+//E[contains(concat(' ', @class, ' '), ' c ')][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:first-child.c
 --- xpath
-//*[1]/self::E[contains(concat(' ', @class, ' '), ' c ')]
+//E[count(preceding-sibling::*) = 0 and parent::*][contains(concat(' ', @class, ' '), ' c ')]
 
 ===
 --- selector
 E#i:first-child
 --- xpath
-//*[1]/self::E[@id='i']
+//E[@id='i'][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:first-child#i
 --- xpath
-//*[1]/self::E[@id='i']
+//E[count(preceding-sibling::*) = 0 and parent::*][@id='i']
 
 ===
 --- selector
@@ -328,25 +333,25 @@ E#i:lang(c)
 --- selector
 *:lang(c)#i:first-child
 --- xpath
-//*[1]/self::*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+//*[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:lang(c)#i:first-child
 --- xpath
-//*[1]/self::E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i'][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:lang(c):first-child#i
 --- xpath
-//*[1]/self::E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][@id='i']
+//E[@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0 and parent::*][@id='i']
 
 ===
 --- selector
 E#i:lang(c):first-child
 --- xpath
-//*[1]/self::E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')]
+//E[@id='i'][@xml:lang='c' or starts-with(@xml:lang, 'c-')][count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
@@ -390,25 +395,25 @@ E#i:lang(c):first-child
 --- selector
 :nth-child(1)
 --- xpath
-//*[count(preceding-sibling::*) = 0]
+//*[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 *:nth-child(1)
 --- xpath
-//*[count(preceding-sibling::*) = 0]
+//*[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:nth-child(1)
 --- xpath
-//E[count(preceding-sibling::*) = 0]
+//E[count(preceding-sibling::*) = 0 and parent::*]
 
 ===
 --- selector
 E:nth-child(2)
 --- xpath
-//E[count(preceding-sibling::*) = 1]
+//E[count(preceding-sibling::*) = 1 and parent::*]
 
 ===
 --- selector
@@ -432,3 +437,25 @@ E:empty
 :empty
 --- xpath
 //*[not(* or text())]
+
+===
+--- selector
+p , :root
+--- xpath
+//p | /*
+
+===
+--- selector
+p , q
+--- xpath
+//p | //q
+===
+--- selector
+div *:not(p) em
+--- xpath
+//div//*[not(self::p)]//em
+===
+--- selector
+div em:only-child
+--- xpath
+//div//em[count(preceding-sibling::*) = 0 and parent::*][count(following-sibling::*) = 0 and parent::*]
