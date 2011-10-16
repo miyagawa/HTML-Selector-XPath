@@ -171,13 +171,13 @@ F > E:last-child
 
 ===
 --- selector
-E[@href*="bar"]
+E[href*="bar"]
 --- xpath
 //E[contains(@href, 'bar')]
 
 ===
 --- selector
-E:not([@href*="bar"])
+E:not([href*="bar"])
 --- xpath
 //E[not(contains(@href, 'bar'))]
 
