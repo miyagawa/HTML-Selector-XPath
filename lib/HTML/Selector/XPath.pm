@@ -49,7 +49,7 @@ sub convert_attribute_match {
     } elsif ($op eq '~=') { # substring attribute match
         "contains(concat(' ', \@$left, ' '), ' $right ')";
     } elsif ($op eq '*=') { # real substring attribute match
-        "contains($left, '$right')";
+        "contains(\@$left, '$right')";
     } elsif ($op eq '|=') {
         "\@$left='$right' or starts-with(\@$left, '$right-')";
     } elsif ($op eq '^=') {
