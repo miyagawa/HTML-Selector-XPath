@@ -20,9 +20,9 @@ run {
     } else {
         $expr = HTML::Selector::XPath->new($block->selector)->to_xpath
     };
-    diag $expr;
     my @nodes = $tree->findnodes( $expr );
-    is_deeply [ map $_->as_XML, @nodes ], $block->expected, $block->selector;
+    is_deeply [ map $_->as_XML, @nodes ], $block->expected,
+        $block->selector . " -> $expr";
 }
 
 __END__
@@ -181,7 +181,7 @@ p:nth-child(2)
 <a href="barred">Barred</a>
 <a href="bar">bar</a>
 --- selector
-a[@href*="bar"]
+a[href*="bar"]
 --- expected
 <a href="foobar">Foobar</a>
 <a href="barred">Barred</a>
@@ -195,7 +195,7 @@ a[@href*="bar"]
 <a href="bar">bar</a>
 
 --- selector
-a:not([@href*="bar"])
+a:not([href*="bar"])
 --- expected
 <a href="no">No</a>
 
