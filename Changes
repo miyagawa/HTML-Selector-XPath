@@ -1,5 +1,11 @@
 Revision history for Perl extension HTML::Selector::XPath
 
+0.09 Sun Oct 16 13:07:09 GMT 2011
+      - Fix bug in attribute-value-substring selectors where
+        the CSS attributes were wrongly assumed to be
+        specified with @href (Aaron Crane)
+      - Make test suite less verbose (Aaron Crane)
+
 0.08 Sun Sep 18 12:31:31 PDT 2011
       - Fix bug when combining selectors (p , q). Whitespace created invalid
         XPath expressions there. (Corion)
