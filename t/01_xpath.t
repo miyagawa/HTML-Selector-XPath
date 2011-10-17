@@ -92,6 +92,12 @@ E[foo]
 
 ===
 --- selector
+E[foo=warning]
+--- xpath
+//E[@foo='warning']
+
+===
+--- selector
 E[foo="warning"]
 --- xpath
 //E[@foo='warning']
@@ -104,7 +110,19 @@ E[foo~="warning"]
 
 ===
 --- selector
+E[foo~=warning]
+--- xpath
+//E[contains(concat(' ', @foo, ' '), ' warning ')]
+
+===
+--- selector
 E[foo^="warning"]
+--- xpath
+//E[starts-with(@foo,'warning')]
+
+===
+--- selector
+E[foo^=warning]
 --- xpath
 //E[starts-with(@foo,'warning')]
 
@@ -116,13 +134,31 @@ E:not([foo^="warning"])
 
 ===
 --- selector
+E:not([foo^=warning])
+--- xpath
+//E[not(starts-with(@foo,'warning'))]
+
+===
+--- selector
 E[foo$="warning"]
 --- xpath
 //E[ends-with(@foo,'warning')]
 
 ===
 --- selector
+E[foo$=warning]
+--- xpath
+//E[ends-with(@foo,'warning')]
+
+===
+--- selector
 E[lang|="en"]
+--- xpath
+//E[@lang='en' or starts-with(@lang, 'en-')]
+
+===
+--- selector
+E[lang|=en]
 --- xpath
 //E[@lang='en' or starts-with(@lang, 'en-')]
 
@@ -177,7 +213,19 @@ E[href*="bar"]
 
 ===
 --- selector
+E[href*=bar]
+--- xpath
+//E[contains(@href, 'bar')]
+
+===
+--- selector
 E:not([href*="bar"])
+--- xpath
+//E[not(contains(@href, 'bar'))]
+
+===
+--- selector
+E:not([href*=bar])
 --- xpath
 //E[not(contains(@href, 'bar'))]
 
