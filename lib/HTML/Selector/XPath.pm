@@ -163,7 +163,7 @@ sub to_xpath {
             };
             push @parts, "[\@$1]";
         } elsif ($rule =~ $reg->{badattr}) {
-            Carp::croak "Invalid attribute-value selector $rule";
+            Carp::croak "Invalid attribute-value selector '$rule'";
         }
 
         # Match negation
@@ -174,7 +174,7 @@ sub to_xpath {
             } elsif ($sub_rule =~ s/$reg->{attr1}//) {
                 push @parts, "[not(\@$1)]";
             } elsif ($rule =~ $reg->{badattr}) {
-                Carp::croak "Invalid attribute-value selector $rule";
+                Carp::croak "Invalid attribute-value selector '$rule'";
             } else {
                 my $xpath = selector_to_xpath($sub_rule);
                 $xpath =~ s!^//!!;
