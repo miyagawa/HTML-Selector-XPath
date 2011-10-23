@@ -2,13 +2,35 @@ use strict;
 use Test::Base;
 use HTML::Selector::XPath;
 
-plan tests => 1 * blocks;
+my @should_die = split /\n+/, <<'EOF';
+[1a]
+[-1a]
+[--a]
+[!a]
+[ab!c]
+[]
+[x=1a]
+[x=-1a]
+[x=--a]
+[x=!a]
+[x=ab!c]
+[x="]
+[x="abc" "]
+[x=abc z]
+EOF
+
+plan tests => 1 * blocks() + @should_die;
 filters { selector => 'chomp', xpath => 'chomp' };
 
 run {
     my $block = shift;
     my $selector = HTML::Selector::XPath->new($block->selector);
     is $selector->to_xpath, $block->xpath, $block->selector;
+};
+
+for my $selector (@should_die) {
+    my $to_xpath = eval { HTML::Selector::XPath->new($selector)->to_xpath };
+    is($to_xpath, undef, "invalid selector should die: $selector");
 }
 
 __END__
@@ -92,6 +114,12 @@ E[foo]
 
 ===
 --- selector
+E[foo=warning]
+--- xpath
+//E[@foo='warning']
+
+===
+--- selector
 E[foo="warning"]
 --- xpath
 //E[@foo='warning']
@@ -104,7 +132,19 @@ E[foo~="warning"]
 
 ===
 --- selector
+E[foo~=warning]
+--- xpath
+//E[contains(concat(' ', @foo, ' '), ' warning ')]
+
+===
+--- selector
 E[foo^="warning"]
+--- xpath
+//E[starts-with(@foo,'warning')]
+
+===
+--- selector
+E[foo^=warning]
 --- xpath
 //E[starts-with(@foo,'warning')]
 
@@ -116,13 +156,31 @@ E:not([foo^="warning"])
 
 ===
 --- selector
+E:not([foo^=warning])
+--- xpath
+//E[not(starts-with(@foo,'warning'))]
+
+===
+--- selector
 E[foo$="warning"]
 --- xpath
 //E[ends-with(@foo,'warning')]
 
 ===
 --- selector
+E[foo$=warning]
+--- xpath
+//E[ends-with(@foo,'warning')]
+
+===
+--- selector
 E[lang|="en"]
+--- xpath
+//E[@lang='en' or starts-with(@lang, 'en-')]
+
+===
+--- selector
+E[lang|=en]
 --- xpath
 //E[@lang='en' or starts-with(@lang, 'en-')]
 
@@ -177,7 +235,19 @@ E[href*="bar"]
 
 ===
 --- selector
+E[href*=bar]
+--- xpath
+//E[contains(@href, 'bar')]
+
+===
+--- selector
 E:not([href*="bar"])
+--- xpath
+//E[not(contains(@href, 'bar'))]
+
+===
+--- selector
+E:not([href*=bar])
 --- xpath
 //E[not(contains(@href, 'bar'))]
 
@@ -459,3 +529,27 @@ div *:not(p) em
 div em:only-child
 --- xpath
 //div//em[count(preceding-sibling::*) = 0 and parent::*][count(following-sibling::*) = 0 and parent::*]
+
+===
+--- selector
+[x=abc]
+--- xpath
+//*[@x='abc']
+
+===
+--- selector
+[x=a-bc]
+--- xpath
+//*[@x='a-bc']
+
+===
+--- selector
+[x=abc-]
+--- xpath
+//*[@x='abc-']
+
+===
+--- selector
+[x=ab--c]
+--- xpath
+//*[@x='ab--c']
