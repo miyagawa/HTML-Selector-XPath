@@ -507,3 +507,27 @@ div *:not(p) em
 div em:only-child
 --- xpath
 //div//em[count(preceding-sibling::*) = 0 and parent::*][count(following-sibling::*) = 0 and parent::*]
+
+===
+--- selector
+[x=abc]
+--- xpath
+//*[@x='abc']
+
+===
+--- selector
+[x=a-bc]
+--- xpath
+//*[@x='a-bc']
+
+===
+--- selector
+[x=abc-]
+--- xpath
+//*[@x='abc-']
+
+===
+--- selector
+[x=ab--c]
+--- xpath
+//*[@x='ab--c']
