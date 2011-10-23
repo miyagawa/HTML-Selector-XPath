@@ -14,18 +14,20 @@ sub selector_to_xpath {
     __PACKAGE__->new(shift)->to_xpath(@_);
 }
 
+# XXX: Identifiers should also allow any characters U+00A0 and higher, and any
+# escaped characters.
+my $ident = qr/(?![0-9]|-[-0-9])[-_a-zA-Z0-9]+/;
+
 my $reg = {
     # tag name/id/class
     element => qr/^([#.]?)([a-z0-9\\*_-]*)((\|)([a-z0-9\\*_-]*))?/i,
     # attribute presence
-    attr1   => qr/^\[([^\]]*)\]/,
+    attr1   => qr/^\[ \s* ($ident) \s* \]/x,
     # attribute value match
-    attr2   => qr/^\[\s*([^*~\|=\s:^\$]+)\s*([~\|*^\$]?=)\s*(?:
-        # XXX: Identifiers should also allow any characters U+00A0 and higher,
-        # and any escaped characters.
-        (?![0-9]|-[-0-9]) ([-_a-zA-Z0-9]+)
-        | "([^"]+)"
-    ) \s*\]/ix,
+    attr2   => qr/^\[ \s* ($ident) \s*
+        ( [~|*^\$]? = ) \s*
+        (?: ($ident) | "([^"]+)" ) \s* \] /x,
+    badattr => qr/^\[/,
     attrN   => qr/^:not\((.*?)\)/i, # this should be a parentheses matcher instead of a RE!
     pseudo  => qr/^:([()a-z0-9_+-]+)/i,
     # adjacency/direct descendance
@@ -160,6 +162,8 @@ sub to_xpath {
                 $tag_index = $#parts;
             };
             push @parts, "[\@$1]";
+        } elsif ($rule =~ $reg->{badattr}) {
+            Carp::croak "Invalid attribute-value selector $rule";
         }
 
         # Match negation
@@ -169,6 +173,8 @@ sub to_xpath {
                 push @parts, "[not(", convert_attribute_match( $1, $2, $^N ), ")]";
             } elsif ($sub_rule =~ s/$reg->{attr1}//) {
                 push @parts, "[not(\@$1)]";
+            } elsif ($rule =~ $reg->{badattr}) {
+                Carp::croak "Invalid attribute-value selector $rule";
             } else {
                 my $xpath = selector_to_xpath($sub_rule);
                 $xpath =~ s!^//!!;
