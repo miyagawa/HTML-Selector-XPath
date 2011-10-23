@@ -1,5 +1,8 @@
 Revision history for Perl extension HTML::Selector::XPath
 
+0.11 Sun Oct 23 21:45:00 GMT 2011
+      - Add test to MANIFEST so it also ships
+
 0.10 Sun Oct 23 21:10:53 GMT 2011
       - Identifiers are now parsed closer to the CSS3 spec
       - Certain invalid attribute selectors now raise an exception
