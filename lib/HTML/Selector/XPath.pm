@@ -25,8 +25,8 @@ my $reg = {
     attr1   => qr/^\[ \s* ($ident) \s* \]/x,
     # attribute value match
     attr2   => qr/^\[ \s* ($ident) \s*
-        ( [~|*^\$]? = ) \s*
-        (?: ($ident) | "([^"]+)" ) \s* \] /x,
+        ( [~|*^\$!]? = ) \s*
+        (?: ($ident) | "([^"]*)" ) \s* \] /x,
     badattr => qr/^\[/,
     attrN   => qr/^:not\((.*?)\)/i, # this should be a parentheses matcher instead of a RE!
     pseudo  => qr/^:([()a-z0-9_+-]+)/i,
@@ -52,7 +52,7 @@ sub convert_attribute_match {
     my ($left,$op,$right) = @_;
     # negation (e.g. [input!="text"]) isn't implemented in CSS, but include it anyway:
     if ($op eq '!=') {
-        "\@$left!='$right";
+        "\@$left!='$right'";
     } elsif ($op eq '~=') { # substring attribute match
         "contains(concat(' ', \@$left, ' '), ' $right ')";
     } elsif ($op eq '*=') { # real substring attribute match

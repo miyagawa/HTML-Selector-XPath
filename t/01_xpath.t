@@ -553,3 +553,22 @@ div em:only-child
 [x=ab--c]
 --- xpath
 //*[@x='ab--c']
+
+===
+--- selector
+option[value!=""]
+--- xpath
+//option[@value!='']
+
+===
+--- selector
+option[ value="" ]
+--- xpath
+//option[@value='']
+
+===
+--- selector
+tr[class!="wantedClass"]
+  
+--- xpath
+//tr[@class!='wantedClass']
