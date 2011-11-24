@@ -1,5 +1,9 @@
 Revision history for Perl extension HTML::Selector::XPath
 
+0.12 Thu Nov 24 22:13:00 GMT 2011
+      - Add tests and fix negated selectors as reported
+        by Nilson Santos Figueiredo Junior
+
 0.11 Sun Oct 23 21:45:00 GMT 2011
       - Add test to MANIFEST so it also ships
 
