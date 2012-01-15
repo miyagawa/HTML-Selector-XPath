@@ -2,7 +2,7 @@ package HTML::Selector::XPath;
 
 use strict;
 use 5.008_001;
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 require Exporter;
 our @EXPORT_OK = qw(selector_to_xpath);
@@ -139,6 +139,11 @@ sub to_xpath {
             } else {
                 $tag = '*';
             }
+            
+            if (defined $parms{prefix} and not $tag =~ /[*:|]/) {
+                $tag = join ':', $parms{prefix}, $tag;
+            }
+            
             if (! $wrote_tag++) {
                 push @parts, $tag;
                 $tag_index = $#parts;
@@ -294,13 +299,13 @@ CSS2 and partial CSS3 selectors to the equivalent XPath expression.
 
 =item selector_to_xpath
 
-  $xpath = selector_to_xpath($selector);
+  $xpath = selector_to_xpath($selector, %options);
 
 Shortcut for C<< HTML::Selector->new(shift)->to_xpath(@_) >>. Exported upon request.
 
 =item new
 
-  $sel = HTML::Selector::XPath->new($selector);
+  $sel = HTML::Selector::XPath->new($selector, %options);
 
 Creates a new object.
 
@@ -312,6 +317,9 @@ Creates a new object.
 Returns the translated XPath expression. You can optionally pass
 C<root> parameter, to specify which root to start the expression. It
 defaults to C</>.
+
+The optional C<prefix> option allows you to specify a namespace
+prefix for the generated XPath expression.
 
 =back
 

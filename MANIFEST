@@ -17,4 +17,5 @@ t/01_xpath.t
 t/02_html.t
 t/03_xpath_root.t
 t/04_subclass.t
+t/05_xpath_prefix.t
 t/99_pod.t

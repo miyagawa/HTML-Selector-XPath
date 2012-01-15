@@ -1,5 +1,10 @@
 Revision history for Perl extension HTML::Selector::XPath
 
+0.13 Sun Jan 15 18:52:00 GMT 2012
+      - Added C<prefix> option to add a prefix like C<xhtml>,
+        contributed by Toby Inkster
+        This closes RT #73719
+
 0.12 Thu Nov 24 22:13:00 GMT 2011
       - Add tests and fix negated selectors as reported
         by Nilson Santos Figueiredo Junior
