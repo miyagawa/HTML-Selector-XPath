@@ -572,3 +572,9 @@ tr[class!="wantedClass"]
   
 --- xpath
 //tr[@class!='wantedClass']
+===
+--- selector
+form[name='foo']
+
+--- xpath
+//form[@name='foo']

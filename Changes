@@ -1,5 +1,10 @@
 Revision history for Perl extension HTML::Selector::XPath
 
+0.14 Mon Jan 16 22:00:00 GMT 2012
+      - Also allow single quotes in attribute expressions,
+        as seems to be allowed
+        per http://www.w3.org/TR/CSS2/syndata.html
+
 0.13 Sun Jan 15 18:52:00 GMT 2012
       - Added C<prefix> option to add a prefix like C<xhtml>,
         contributed by Toby Inkster

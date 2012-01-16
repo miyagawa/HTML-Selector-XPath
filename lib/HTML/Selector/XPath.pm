@@ -2,7 +2,7 @@ package HTML::Selector::XPath;
 
 use strict;
 use 5.008_001;
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 require Exporter;
 our @EXPORT_OK = qw(selector_to_xpath);
@@ -26,7 +26,7 @@ my $reg = {
     # attribute value match
     attr2   => qr/^\[ \s* ($ident) \s*
         ( [~|*^\$!]? = ) \s*
-        (?: ($ident) | "([^"]*)" ) \s* \] /x,
+        (?: ($ident) | "([^"]*)" | '([^']*)') \s* \] /x,
     badattr => qr/^\[/,
     attrN   => qr/^:not\((.*?)\)/i, # this should be a parentheses matcher instead of a RE!
     pseudo  => qr/^:([()a-z0-9_+-]+)/i,
