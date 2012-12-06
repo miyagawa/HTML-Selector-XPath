@@ -50,6 +50,8 @@ sub selector {
 
 sub convert_attribute_match {
     my ($left,$op,$right) = @_;
+    $left = lc $left;
+
     # negation (e.g. [input!="text"]) isn't implemented in CSS, but include it anyway:
     if ($op eq '!=') {
         "\@$left!='$right'";
@@ -166,7 +168,7 @@ sub to_xpath {
                 push @parts, '*';
                 $tag_index = $#parts;
             };
-            push @parts, "[\@$1]";
+            push @parts, "[\@\L$1]";
         } elsif ($rule =~ $reg->{badattr}) {
             Carp::croak "Invalid attribute-value selector '$rule'";
         }
@@ -177,7 +179,7 @@ sub to_xpath {
             if ($sub_rule =~ s/$reg->{attr2}//) {
                 push @parts, "[not(", convert_attribute_match( $1, $2, $^N ), ")]";
             } elsif ($sub_rule =~ s/$reg->{attr1}//) {
-                push @parts, "[not(\@$1)]";
+                push @parts, "[not(\@\L$1)]";
             } elsif ($rule =~ $reg->{badattr}) {
                 Carp::croak "Invalid attribute-value selector '$rule'";
             } else {

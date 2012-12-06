@@ -418,3 +418,17 @@ div em:nth-last-child(2n+1)
 <em>here</em>
 <em>everywhere</em>
 <em>nowhere</em>
+===
+--- input
+<html><head></head><body>
+<div class="sidebar">
+    <a savelink="true" href="http://example.com/">savelink</a>
+    <a saveLink="true" href="http://example.com/">saveLink</a>
+    <a shareLink="true" href="http://example.com/">shareLink</a>
+</div>
+</body></html>
+--- selector
+a[saveLink]
+--- expected
+<a href="http://example.com/" savelink="true">savelink</a>
+<a href="http://example.com/" savelink="true">saveLink</a>
