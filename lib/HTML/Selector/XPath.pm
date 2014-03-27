@@ -20,7 +20,7 @@ my $ident = qr/(?![0-9]|-[-0-9])[-_a-zA-Z0-9]+/;
 
 my $reg = {
     # tag name/id/class
-    element => qr/^([#.]?)([a-z0-9\\*_-]*)((\|)([a-z0-9\\*_-]*))?/i,
+    element => qr/^([#.]?)([^\s'"#.\/:@,=~>()\[\]|]*)((\|)([a-z0-9\\*_-]*))?/i,
     # attribute presence
     attr1   => qr/^\[ \s* ($ident) \s* \]/x,
     # attribute value match
