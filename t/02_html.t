@@ -418,3 +418,14 @@ div em:nth-last-child(2n+1)
 <em>here</em>
 <em>everywhere</em>
 <em>nowhere</em>
+===
+--- input
+<body>
+<div class="小飼弾">小飼弾</div>
+<div class="bar">foo</div>
+</body>
+--- selector
+div.小飼弾
+--- expected
+<div class="小飼弾">小飼弾</div>
+
